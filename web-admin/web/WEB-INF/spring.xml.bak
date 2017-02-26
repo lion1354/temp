@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+		default-autowire="byType">
+
+	<!-- enable autowire -->
+	<!--context:annotation-config /-->
+	<!-- Scan the service package and the sub package -->
+	<context:component-scan base-package="cn.forp" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<!-- Database Connection Pool -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+		<property name="url" value="jdbc:mysql://139.196.150.138:3306/ZY_AgricultureInsurance?zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;characterEncoding=utf-8" />
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/ZY_AgricultureInsurance?zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;characterEncoding=utf-8" />		 -->
+		<property name="username" value="ZY-AI" />
+		<property name="password" value="zy-AI@20161113" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="2" />
+		<property name="minIdle" value="1" /> 
+		<property name="maxActive" value="5" />
+		<!-- 配置获取连接等待超时的时间，单位是毫秒 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="select 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		<!-- 启用拦截的filters：sql注入，监控统计 -->
+		<property name="filters" value="wall,stat" /> 
+	</bean>
+
+	<!-- Transaction manager for a single JDBC DataSource (alternative to JTA) -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- JNDI DataSource for J2EE environments
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/AnDong/Framework"/>
+	</bean>
+	-->
+
+	<!-- Transaction manager that delegates to JTA (for a transactional JNDI DataSource) -->
+	<!--
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager"/>
+	-->
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below)
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/jdbc.properties"/>
+	</bean>
+	-->
+
+	<!-- 
+		Simple local DataSource that works in any environment.
+		This uses the JDBC DriverManager to obtain connections, and does NOT perform connection
+		pooling. Connection pooling is essential to all real-world applications.
+		This definition is good for getting started, as it introduces no dependencies beyond
+		the JDK, but DriverManagerDataSource is not intended for production usage.
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	 -->
+
+	<!-- 
+		Alternative local DataSource that works in any environment, and offers much better performance.
+		Uses Apache Commons DBCP for connection pooling. See Commons DBCP documentation
+		for the required JAR files. See the PetStore sample application also shipped with
+		Spring, for an example of Commons DBCP usage and the necessary build script.
+		Alternatively you can use another connection pool such as C3P0, similarly configured
+		using Spring.
+		A standalone connection pool such as Commons DBCP is a good choice for use outside an
+		application server environment, including web applications running in a web container without
+		JTA, or integration testing using the org.springframework.test package.
+	 -->
+	<!--
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	-->
+
+	<!-- ========================= Service CONFIGURATION ======================== -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- Base Service
+	<bean id="baseService" class="com.andong.platform.BaseService">
+		<property name="dataSource" ref="dataSource" />
+		<property name="redisPool" ref="redisPool" />
+	</bean>
+	-->
+
+	<!--bean id="springLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" /-->
+
+	<!-- ========================= ASPECT CONFIGURATION ======================== -->
+	<!-- Tell spring to use CGLib to proxy class (default is JDK's proxy) -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<aop:config>
+		<!--
+			This definition creates auto-proxy infrastructure based on the given pointcut, expressed in AspectJ pointcut language. Here: applying the advice named "txAdvice" to all methods defined in the "com.andong" package.
+		-->
+		<aop:pointcut id="aopPointCut" expression="execution(* cn.forp.framework.platform.service.*.*(..)) || execution(* cn.forp.walnut.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="aopPointCut" />
+	</aop:config>
+
+	<!--
+		Transaction advice definition, based on method name patterns. Defaults to PROPAGATION_REQUIRED for all methods whose name starts with "create" or "update" or "delete", and to PROPAGATION_REQUIRED with read-only hint for all other methods.
+	-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- TODO 事务隔离级别可以尝试 NESTED -->
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="create*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="change*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="write*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="record*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="backup*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="*" read-only="true" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+</beans>

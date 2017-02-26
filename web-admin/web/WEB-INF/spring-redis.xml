@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<!-- Jedis -->
+<beans default-autowire="byName">
+	<!-- property配置文件
+    <context:property-placeholder location="classpath:redis.properties"/>
+	-->
+
+	<!-- Default Pool Config -->
+	<bean id="defaultJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal"  value="5" />
+		<property name="maxIdle" value="2" />
+		<property name="minIdle" value="2" />
+		<property name="testOnBorrow"  value="true" />
+		<property name="testOnReturn"  value="true" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+
+	<!-- Default Pool -->
+	<bean id="defaultPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+		<constructor-arg index="0" ref="defaultJedisPoolConfig"/>
+		<constructor-arg index="1" value="115.159.39.254"/>
+<!-- 		<constructor-arg index="1" value="127.0.0.1"/> -->
+		<constructor-arg index="2" value="6379" type="int"/>
+		<constructor-arg index="3" value="0" type="int"/>
+		<constructor-arg index="4" value="zy_AI*6379"/>
+	</bean>
+
+	<!-- Sub System Pool Config
+	<bean id="apiSessionPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal"  value="5" />
+		<property name="maxIdle" value="2" />
+		<property name="minIdle" value="2" />
+		<property name="testOnBorrow"  value="true" />
+		<property name="testOnReturn"  value="true" />
+		<property name="testWhileIdle" value="true" />
+	</bean>
+	-->
+
+	<!-- Sub System Pool
+	<bean id="apiSessionPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">
+		<constructor-arg index="0" ref="subSystemJedisPoolConfig"/>
+		<constructor-arg index="1" value="192.168.100.7"/>
+		<constructor-arg index="2" value="6380" type="int"/>
+		<constructor-arg index="3" value="0" type="int"/>
+		<constructor-arg index="4" value="zy_AI*6380"/>
+	</bean>
+	-->
+</beans>

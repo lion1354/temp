@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+	<mongo:db-factory id="mongoDbFactory" host="139.196.150.138" port="9431" dbname="njhzbx" username="admin" password="Bruce-20170216@MDB" />
+	<mongo:mapping-converter id="converter" db-factory-ref="mongoDbFactory" />
+
+	<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+		<constructor-arg ref="mongoDbFactory"/>
+		<constructor-arg ref="converter"/>
+	</bean>
+
+	<!-- Mongo Template -->
+	<bean id="documentTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongoDbFactory"/>
+		<constructor-arg ref="converter"/>
+	</bean>
+</beans>

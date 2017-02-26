@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<display-name>Forp Framework Platform</display-name>
+
+	<!--
+	  - Load the Spring XML files by manual in System Init.
+	  - Location of the XML file that defines the root application context.
+	  - Applied by ContextLoaderServlet: beans, mvc...
+	-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring.xml, /WEB-INF/spring-*.xml</param-value>
+	</context-param>
+
+	<!--=========================== Spring Listener ===========================-->
+	<!--
+	  - Loads the root application context of this web app at startup,
+	  - by default from "/WEB-INF/applicationContext.xml".
+		- Note that you need to fall back to Spring's ContextLoaderServlet for
+		- J2EE servers that do not follow the Servlet 2.4 initialization order.
+		-
+	  - Use WebApplicationContextUtils.getWebApplicationContext(servletContext)
+	  - to access it anywhere in the web application, outside of the framework.
+	  -
+	  - The root context is the parent of all servlet-specific contexts.
+	  - This means that its beans are automatically available in these child contexts,
+	  - both for getBean(name) calls and (external) bean references.
+	  -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!--=========================== Character Encoding Filter ===========================-->
+	<filter>
+		<filter-name>charset-encoding-filter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>charset-encoding-filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--=========================== Spring MVC ===========================-->
+	<!--configure the setting of springmvcDispatcherServlet and configure the mapping-->
+	<servlet>
+		<servlet-name>spring-mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/servlet-mvc-spring.xml</param-value>
+		</init-param>
+
+		<async-supported>true</async-supported>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>spring-mvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+    <!--=========================== System init Servlet ===========================-->
+	<servlet>
+		<servlet-name>System Init</servlet-name>
+		<servlet-class>cn.forp.framework.platform.SystemInit</servlet-class>
+
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<!--=========================== Alibaba Druid State Servlet ===========================-->
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+
+		<!--
+		<init-param>
+			<param-name>resetEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>loginUsername</param-name>
+			<param-value>admin</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>loginPassword</param-name>
+			<param-value>admin1234</param-value>
+		</init-param>
+		-->
+
+		<!--init-param>
+			<param-name>resetEnable</param-name>
+			<param-value>false</param-value>
+		</init-param-->
+
+		<!--init-param>
+			<param-name>allow</param-name>
+			<param-value>128.242.127.1/24,128.242.128.1</param-value>
+		</init-param-->
+
+		<!--init-param>
+			<param-name>deny</param-name>
+			<param-value>128.242.127.4</param-value>
+		</init-param-->
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/forp/*</url-pattern>
+	</servlet-mapping>
+
+  <!--=========================== Google Kaptcha Servlet For Forp ===========================-->
+	<!--
+	<servlet>
+		<servlet-name>Google Kaptcha</servlet-name>
+		<servlet-class>cn.forp.framework.core.ForpKaptchaServlet</servlet-class>
+
+		<init-param>
+			<param-name>kaptcha.noise.impl</param-name>
+			<param-value>com.google.code.kaptcha.impl.NoNoise</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.obscurificator.impl</param-name>
+			<param-value>com.google.code.kaptcha.impl.ShadowGimpy</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.border.color</param-name>
+			<param-value>192,192,192</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.image.width</param-name>
+			<param-value>100</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.image.height</param-name>
+			<param-value>30</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.textproducer.char.length</param-name>
+			<param-value>4</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.textproducer.font.size</param-name>
+			<param-value>23</param-value>
+		</init-param>
+
+		<init-param>
+			<param-name>kaptcha.textproducer.char.space</param-name>
+			<param-value>5</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Google Kaptcha</servlet-name>
+		<url-pattern>*.vdi</url-pattern>
+	</servlet-mapping>
+	-->
+
+	<!--=========================== JSP Config ===========================-->
+	<jsp-config>
+		<jsp-property-group>
+			<description>The charactor set configuration for jsp file</description>
+			<display-name>JSP Configuration</display-name>
+			<url-pattern>*.jsp</url-pattern>
+			<el-ignored>false</el-ignored>
+			<page-encoding>UTF-8</page-encoding>
+			<scripting-invalid>false</scripting-invalid>
+		</jsp-property-group>
+
+		<jsp-property-group>
+			<display-name>HTML Configuration</display-name>
+			<url-pattern>*.html</url-pattern>
+			<el-ignored>false</el-ignored>
+			<page-encoding>UTF-8</page-encoding>
+			<scripting-invalid>false</scripting-invalid>
+		</jsp-property-group>
+    </jsp-config>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+	<!--=========================== Error Pages ===========================-->
+	<error-page>
+		<error-code>401</error-code>
+		<location>/platform/error/401</location>
+	</error-page>
+
+	<error-page>
+		<error-code>403</error-code>
+		<location>/platform/error/401</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/platform/error/404</location>
+	</error-page>
+
+	<error-page>
+		<error-code>405</error-code>
+		<location>/platform/error/500</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/platform/error/500</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/platform/error/500</location>
+	</error-page>
+</web-app>

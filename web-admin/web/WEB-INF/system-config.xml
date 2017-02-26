@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<version>4.0</version>
+	<description>Forp SaaS平台开发框架</description>
+
+	<!-- Whole status of site: dev, product -->
+	<status>dev</status>
+	<!-- 附件存储引擎: file, mongodb，alibaba，qiniu -->
+	<attachment-engine>mongodb</attachment-engine>
+
+	<!-- 阿里百川 - 顽兔 -->
+	<alibaba-media>
+		<ak>123</ak>
+		<sk>456</sk>
+		<name-space>forp</name-space>
+	</alibaba-media>
+
+	<!-- 七牛 - 云存储 -->
+	<qiniu>
+		<ak>R9ZoImx2pWyPDuhGwcxeSrxGoxADhLOtapNQAemt</ak>
+		<sk>UQ845DYf17Jb3empGGniT-7gStdMukJHw9LS16EK</sk>
+		<bucket-name>image-dev</bucket-name>
+		<domain-name>oky0so4m0.bkt.clouddn.com</domain-name>
+	</qiniu>
+
+	<!-- 后台自动服务 -->
+	<threads>
+		<!--thread name="数据库备份服务" start="true">cn.forp.framework.platform.thread.DatabaseBackup</thread>
+		<thread name="Mail发送服务" start="true">cn.forp.framework.platform.thread.Mail</thread>
+		<thread name="SMS发送服务" start="true">cn.forp.framework.platform.thread.SMS</thread-->
+	</threads>
+
+	<!-- 短信提供商 -->
+	<!-- sms-provider name="西安亿点" class="cn.forp.framework.platform.thread.smsprovider.XiAnYiDian" / -->
+</config>
