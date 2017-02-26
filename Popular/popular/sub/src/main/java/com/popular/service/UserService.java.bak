@@ -1,0 +1,28 @@
+package com.popular.service;
+
+import java.util.List;
+
+import com.popular.model.TopicCollect;
+import com.popular.model.User;
+
+public interface UserService {
+
+	User get(long id);
+
+	int add(User user);
+
+	int delete(User user);
+
+	int update(User user);
+
+	User verifyAccessToken(String accessToken);
+
+	User getUserByLoginName(String loginName);
+
+	User getUserByMail(String mail);
+
+	List<User> getUsersByIds(List<Long> ids);
+
+	List<TopicCollect> getCollectTopicByUserId(long userId);
+
+}

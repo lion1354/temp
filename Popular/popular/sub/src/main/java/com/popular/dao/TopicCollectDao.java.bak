@@ -1,0 +1,19 @@
+package com.popular.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.popular.model.TopicCollect;
+
+@Repository
+public interface TopicCollectDao {
+	List<TopicCollect> getTopicCollectsByUserId(long userId);
+
+	TopicCollect get(HashMap<String, Object> map);
+
+	int add(TopicCollect bean);
+
+	int delete(TopicCollect bean);
+}

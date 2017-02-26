@@ -1,0 +1,28 @@
+package com.popular.service;
+
+import java.util.HashMap;
+import java.util.List;
+
+import com.popular.model.Topic;
+import com.popular.model.User;
+
+public interface TopicService {
+
+	List<Topic> getTopics(HashMap<String, Object> params);
+
+	Topic getFullTopic(long topicId);
+
+	Topic get(long topicId);
+
+	long add(Topic topic);
+
+	int update(Topic topic);
+
+	@Deprecated
+	int delete(Topic topic);
+
+	int collectTopic(User user, Topic topic);
+
+	int deCollectTopic(User user, Topic topic);
+
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.PhotoDao">
+	<resultMap id="PhotoResultMap" type="com.popular.model.Photo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="thumbnail_url" property="thumbnailUrl" jdbcType="VARCHAR" />
+		<result column="original_url" property="originalUrl" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, thumbnail_url, original_url, description, create_time
+	</sql>
+
+	<select id="getPhotoByUserId" resultMap="PhotoResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from PHOTO where user_id = #{userId}
+		order by create_time DESC
+	</select>
+
+	<select id="getPhotoById" resultMap="PhotoResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from PHOTO where id = #{id}
+	</select>
+	
+	<select id="countByUserId" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(*) from PHOTO where user_id = #{userId}
+	</select>
+
+	<insert id="add" parameterType="Object">
+		insert into PHOTO
+		(user_id, thumbnail_url, original_url, description, create_time)
+		values
+		(#{userId}, #{thumbnailUrl}, #{originalUrl}, #{description}, #{createTime})
+	</insert>
+
+	<delete id="deleteByUserId" parameterType="java.lang.Integer">
+		delete from PHOTO where User_id = #{UserId}
+	</delete>
+
+	<delete id="deleteByIds" parameterType="java.util.List">
+		delete from PHOTO where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,29 @@
+package com.popular.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.popular.model.Reply;
+
+@Repository
+public interface ReplyDao {
+	Reply getFullReply(long replyId);
+
+	Reply get(long replyId);
+
+	List<Reply> getRepliesByTopicId(long topicId);
+
+	int add(Reply reply);
+
+	int update(Reply reply);
+
+	int delete(String replyId);
+
+	Reply getLastReplyByTopId(long topicId);
+
+	List<Reply> getRepliesByAuthorId(long authorId);
+
+	int getCountByAuthorId(long authorId);
+
+}

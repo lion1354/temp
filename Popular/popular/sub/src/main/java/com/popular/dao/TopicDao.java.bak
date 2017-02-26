@@ -1,0 +1,31 @@
+package com.popular.dao;
+
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.popular.model.Topic;
+
+@Repository
+public interface TopicDao {
+
+	int getCount();
+
+	List<Topic> queryAll(HashMap<String, Object> map);
+
+	Topic getFullTopic(long id);
+
+	int updateLastReply(long id);
+
+	int reduceReplyCount(long id);
+
+	Topic get(long id);
+
+	int update(Topic topic);
+
+	int add(Topic topic);
+
+	int delete(Topic topic);
+
+}

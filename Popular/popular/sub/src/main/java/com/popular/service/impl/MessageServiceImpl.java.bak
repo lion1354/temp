@@ -1,0 +1,54 @@
+package com.popular.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.popular.common.id.IdGen;
+import com.popular.dao.MessageDao;
+import com.popular.model.Message;
+import com.popular.service.MessageService;
+
+@Service("messageService")
+public class MessageServiceImpl implements MessageService {
+	@Resource
+	MessageDao messageDao;
+
+	public Message get(long id) {
+		return messageDao.get(id);
+	}
+
+	@Override
+	public long add(Message message) {
+		long id = IdGen.genId();
+		message.setId(id);
+		messageDao.add(message);
+		return id;
+	}
+
+	@Override
+	public int getMessagesCount(long userId) {
+		return messageDao.getMessagesCount(userId);
+	}
+
+	@Override
+	public int updateMessagesToRead(long userId, long[] messageIds) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("messages", messageIds);
+		return messageDao.updateMessagesToRead(map);
+	}
+
+	@Override
+	public List<Message> getUnreadMessageByUserId(long userId) {
+		return messageDao.getUnreadMessageByUserId(userId);
+	}
+
+	@Override
+	public List<Message> getReadMessagesByUserId(long userId) {
+		return messageDao.getReadMessagesByUserId(userId);
+	}
+}

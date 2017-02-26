@@ -1,0 +1,113 @@
+version = '1.0'
+
+allprojects {
+	apply plugin: 'java'
+}
+
+subprojects {
+	sourceCompatibility = 1.8
+	
+	repositories {
+		jcenter {
+			 url "http://jcenter.bintray.com/"
+		 }
+	 }
+	
+	ext{
+		version = '1.0'
+		javaxMailVersion = '1.4.7'
+		slf4jLog4j12Version = '1.7.6'
+		springVersion = '4.1.6.RELEASE'
+		/*springSecurityVersion = '4.0.1.RELEASE'*/
+	}
+	
+	dependencies {
+		testCompile 'junit:junit:4.8.2'
+		
+		compile 'org.springframework:spring-context:' + springVersion
+		compile 'org.springframework:spring-context-support:' + springVersion
+		compile 'org.springframework:spring-jdbc:' + springVersion
+		compile 'org.springframework:spring-web:' + springVersion
+		compile 'org.springframework:spring-webmvc:' + springVersion
+		compile 'org.springframework.data:spring-data-redis:1.5.1.RELEASE'
+		compile 'org.springframework:spring-test:' + springVersion
+		
+		compile 'org.springframework:spring-beans:' + springVersion
+		compile 'org.springframework:spring-aop:' + springVersion
+		compile 'org.springframework:spring-tx:' + springVersion
+		compile 'org.springframework:spring-core:' + springVersion
+		compile 'org.springframework:spring-aspects:' + springVersion
+		compile 'org.springframework:spring-expression:' + springVersion
+		compile 'org.springframework:spring-instrument:' + springVersion
+		compile 'org.springframework:spring-instrument-tomcat:' + springVersion
+		compile 'org.springframework:spring-jms:' + springVersion
+		compile 'org.springframework:spring-messaging:' + springVersion
+		compile 'org.springframework:spring-orm:' + springVersion
+		compile 'org.springframework:spring-oxm:' + springVersion
+		compile 'org.springframework:spring-webmvc-portlet:' + springVersion
+		compile 'org.springframework:spring-websocket:' + springVersion
+		/*compile 'org.springframework.security:spring-security-core:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-config:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-taglibs:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-web:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-acl:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-ldap:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-crypto:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-openid:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-aspects:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-cas:' + springSecurityVersion
+		compile 'org.springframework.security:spring-security-remoting:' + springSecurityVersion*/
+		
+		compile 'mysql:mysql-connector-java:5.1.24'
+		compile 'com.alibaba:druid:0.2.21'
+		
+		compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4', classifier: 'jdk15'
+		compile group: 'javax.xml', name: 'jaxrpc', version: '1.1'
+		
+		compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+		compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+		compile group: 'javax.mail', name: 'mail', version: javaxMailVersion
+		compile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jLog4j12Version
+		
+		compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+		compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+		compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.1'
+		compile group: 'commons-pool', name: 'commons-pool', version: '1.6'
+		compile 'commons-codec:commons-codec:1.3'
+		compile 'commons-lang:commons-lang:2.6'
+		
+		compile 'com.mangofactory:swagger-springmvc:1.0.2'
+		/*compile 'io.springfox:springfox-swagger2:2.2.2'
+		compile 'io.springfox:springfox-swagger-ui:2.2.2'*/
+		
+		compile 'cglib:cglib:2.2'
+		compile 'org.aspectj:aspectjweaver:1.7.2'
+		compile 'net.sf.ehcache:ehcache:2.10.0'
+		compile 'org.mybatis:mybatis:3.2.7'
+		compile 'org.mybatis:mybatis-spring:1.1.1'
+		
+		compile 'ch.qos.logback:logback-classic:1.0.13'
+		compile 'ch.qos.logback:logback-access:1.0.13'
+		compile 'org.slf4j:jcl-over-slf4j:1.7.5'
+		
+		compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+		compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
+		compile 'com.fasterxml.jackson.core:jackson-core:2.6.0'
+		compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0'
+		compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
+		
+		compile 'javax.servlet.jsp:jsp-api:2.2'
+		
+		compile 'com.github.pagehelper:pagehelper:4.0.3'
+		
+		compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+		
+		compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.2.3'
+		
+		
+	}
+	
+	jar {
+		manifest.attributes provider: 'popular'
+	}
+}

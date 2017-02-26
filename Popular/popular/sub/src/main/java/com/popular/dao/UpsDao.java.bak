@@ -1,0 +1,16 @@
+package com.popular.dao;
+
+import java.util.HashMap;
+
+import org.springframework.stereotype.Repository;
+
+import com.popular.model.Ups;
+
+@Repository
+public interface UpsDao {
+	Ups getUpsByReplyIdAndUserId(HashMap<String, Object> map);
+
+	int add(Ups ups);
+
+	int delete(Ups ups);
+}

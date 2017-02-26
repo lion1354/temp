@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.ProvinceDao">
+	<resultMap id="ProvinceResultMap" type="com.popular.model.Province">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="spelling" property="spelling" jdbcType="VARCHAR" />
+		<result column="initial" property="initial" jdbcType="VARCHAR" />
+		<result column="country" property="country" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, spelling, initial, country
+	</sql>
+
+	<select id="getProvince" resultMap="ProvinceResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PROVINCE order by initial
+	</select>
+
+	<select id="getProvinceByCountry" resultMap="ProvinceResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from PROVINCE where country = #{country} order by initial
+	</select>
+</mapper>

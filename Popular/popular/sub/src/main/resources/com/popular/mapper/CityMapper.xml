@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.CityDao">
+	<resultMap id="CityResultMap" type="com.popular.model.City">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="spelling" property="spelling" jdbcType="VARCHAR" />
+		<result column="initial" property="initial" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, spelling, initial, province
+	</sql>
+
+	<select id="getCity" resultMap="CityResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from CITY order by initial
+	</select>
+
+	<select id="getCityInitial" resultType="String">
+		select distinct initial
+		from CITY order by initial;
+	</select>
+
+	<select id="getCityByProvince" resultMap="CityResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from CITY where province = #{province} order by initial
+	</select>
+</mapper>

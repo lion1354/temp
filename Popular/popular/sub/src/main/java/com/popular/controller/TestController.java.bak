@@ -1,0 +1,37 @@
+package com.popular.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.popular.responseutil.ResponseUtils;
+import com.popular.model.Message;
+
+@RestController
+@RequestMapping("api")
+public class TestController {
+	private static final Logger LOG = LoggerFactory
+			.getLogger(TestController.class);
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public ResponseEntity<?> get() throws Exception {
+		List<Message> list = new ArrayList<Message>();
+		Message m1 = new Message();
+		m1.setType("sdsdd");
+		Message m2 = new Message();
+		m2.setType("adasd");
+		Message m3 = new Message();
+		m3.setType("zcxxc");
+		list.add(m1);
+		list.add(m2);
+		list.add(m3);
+		return ResponseUtils.successWithValues(list);
+	}
+
+}

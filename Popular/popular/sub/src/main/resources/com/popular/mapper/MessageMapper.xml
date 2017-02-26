@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.MessageDao">
+	<resultMap id="MessageResultMap" type="com.popular.model.Message">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="send_id" property="sendId" jdbcType="INTEGER" />
+		<result column="receive_id" property="receiveId" jdbcType="INTEGER" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="send_time" property="sendTime" jdbcType="DATE" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, send_id, receive_id, message, send_time
+	</sql>
+
+	<select id="getMessageBySendIdAndReceiveId" resultMap="MessageResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from MESSAGE where (send_id = #{sendId} and receive_id = #{receiveId})
+		or (send_id = #{receiveId} and receive_id = #{sendId})
+		order by
+		send_time DESC
+	</select>
+
+	<select id="getMessageById" resultMap="MessageResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from MESSAGE where id = #{id}
+	</select>
+
+	<insert id="add" parameterType="Object">
+		insert into
+		MESSAGE
+		(send_id,
+		receive_id, message, send_time)
+		values
+		(#{sendId},
+		#{receiveId},
+		#{message}, #{sendTime})
+	</insert>
+
+	<delete id="deleteBySendIdAndReceiveId" parameterType="java.util.Map">
+		delete
+		from MESSAGE
+		where
+		send_id = #{sendId} and receive_id = #{receiveId}
+	</delete>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from MESSAGE
+		where
+		id = #{id}
+	</delete>
+	
+	<delete id="deleteByDate" parameterType="java.util.Date">
+		delete from MESSAGE
+		where
+		send_time &lt; #{date}
+	</delete>
+</mapper>

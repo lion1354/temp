@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.ClientUserDao">
+	<resultMap id="ClientUserResultMap" type="com.popular.model.ClientUser">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="age" property="age" jdbcType="INTEGER" />
+		<result column="career" property="career" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+		<result column="motto" property="motto" jdbcType="VARCHAR" />
+		<result column="sexual_orientation" property="sexualOrientation"
+			jdbcType="INTEGER" />
+		<result column="emotion" property="emotion" jdbcType="VARCHAR" />
+		<result column="ambition" property="ambition" jdbcType="VARCHAR" />
+		<result column="individuality" property="individuality"
+			jdbcType="VARCHAR" />
+		<result column="know_skill" property="knowSkill" jdbcType="VARCHAR" />
+		<result column="foot_print" property="footPrint" jdbcType="VARCHAR" />
+		<result column="write_book" property="writeBook" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="isRecommend" property="isRecommend" jdbcType="BOOLEAN" />
+		<result column="flower_count" property="flowerCount" jdbcType="INTEGER" />
+		<result column="isVIP" property="isVIP" jdbcType="BOOLEAN" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_ID, phone_number, password, code, nick_name, age,
+		career, city, photo_url, motto, sexual_orientation, emotion,
+		ambition,
+		individuality, know_skill, foot_print,
+		write_book, create_time,
+		update_time, isRecommend,
+		flower_count, isVIP, province
+	</sql>
+
+	<select id="getClientUserByPhoneNumber" resultMap="ClientUserResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where phone_number = #{phoneNumber} limit 0,1
+	</select>
+
+	<select id="getClientUserByCode" resultMap="ClientUserResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where code = #{code} limit 0,1
+	</select>
+
+	<select id="getClientUserByIds" resultMap="ClientUserResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where id IN
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getClientUserById" resultMap="ClientUserResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where id = #{id}
+	</select>
+
+	<select id="getClientUserByPhoneAndPassword" resultMap="ClientUserResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where phone_number = #{phoneNumber} and password =
+		#{password}
+	</select>
+
+	<select id="getClientUserByMap" resultMap="ClientUserResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from CLIENT_USER
+		where id != ${ownerId} and sexual_orientation =
+		#{sexualOrientation} and isRecommend = 1
+		<if test="list != null">
+			and id not in
+			<foreach item="item" index="index" collection="list" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="cityType == 1 and provinceType == -1">
+			and city = #{city}
+			<if test="ageType == 1">
+		        <![CDATA[ and (#{age} - 3) <= age and age <= (#{age} + 3) ]]>
+			</if>
+			<if test="ageType == 2">
+		        <![CDATA[ and ((#{age} - 6) <= age and age < (#{age} - 3) or (#{age} + 3) < age and age <= (#{age} + 6)) ]]>
+			</if>
+			<if test="ageType == 3">
+		        <![CDATA[ and ((#{age} - 10) <= age and age < (#{age} - 6) or (#{age} + 6) < age and age <= (#{age} + 10)) ]]>
+			</if>
+			<if test="ageType == 4">
+		        <![CDATA[ and ((#{age} - 10) > age or age > (#{age} + 10)) ]]>
+			</if>
+		</if>
+		<if test="cityType == 0 and provinceType == 1">
+			and city != #{city} and province = #{province}
+			<if test="ageType == 1">
+		        <![CDATA[ and (#{age} - 3) <= age and age <= (#{age} + 3) ]]>
+			</if>
+			<if test="ageType == 2">
+		        <![CDATA[ and ((#{age} - 6) <= age and age < (#{age} - 3) or (#{age} + 3) < age and age <= (#{age} + 6)) ]]>
+			</if>
+			<if test="ageType == 3">
+		        <![CDATA[ and ((#{age} - 10) <= age and age < (#{age} - 6) or (#{age} + 6) < age and age <= (#{age} + 10)) ]]>
+			</if>
+			<if test="ageType == 4">
+		        <![CDATA[ and ((#{age} - 10) > age or age > (#{age} + 10)) ]]>
+			</if>
+		</if>
+		<if test="cityType == -1 and provinceType == 0">
+			and province != #{province}
+			<if test="ageType == 1">
+		        <![CDATA[ and (#{age} - 3) <= age and age <= (#{age} + 3) ]]>
+			</if>
+			<if test="ageType == 2">
+		        <![CDATA[ and ((#{age} - 6) <= age and age < (#{age} - 3) or (#{age} + 3) < age and age <= (#{age} + 6)) ]]>
+			</if>
+			<if test="ageType == 3">
+		        <![CDATA[ and ((#{age} - 10) <= age and age < (#{age} - 6) or (#{age} + 6) < age and age <= (#{age} + 10)) ]]>
+			</if>
+			<if test="ageType == 4">
+		        <![CDATA[ and ((#{age} - 10) > age or age > (#{age} + 10)) ]]>
+			</if>
+		</if>
+	</select>
+
+	<insert id="add" parameterType="Object">
+		insert into
+		CLIENT_USER
+		(user_ID,
+		phone_number, password, code, nick_name, age, career, city,
+		photo_url,
+		motto, sexual_orientation, emotion, ambition,
+		individuality,
+		know_skill,
+		foot_print, write_book, create_time,
+		update_time,
+		isRecommend, flower_count, isVIP, province)
+		values
+		(#{userId},
+		#{phoneNumber}, #{password}, #{code},
+		#{nickName}, #{age},
+		#{career},
+		#{city}, #{photoUrl}, #{motto},
+		#{sexualOrientation},
+		#{emotion},
+		#{ambition}, #{individuality},
+		#{knowSkill}, #{footPrint},
+		#{writeBook}, #{createTime},
+		#{updateTime}, #{isRecommend},
+		#{flowerCount}, #{isVIP}, #{province})
+	</insert>
+
+	<update id="update" parameterType="Object">
+		update CLIENT_USER
+		<set>
+			<if test="userId != null and userId != ''">
+				user_ID = #{userId},
+			</if>
+			<if test="phoneNumber != null and phoneNumber != ''">
+				phone_number = #{phoneNumber},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="code != null and code != ''">
+				code = #{code},
+			</if>
+			<if test="nickName != null and nickName != ''">
+				nick_name = #{nickName},
+			</if>
+			<if test="age != null">
+				age = #{age},
+			</if>
+			<if test="career != null and career != ''">
+				career = #{career},
+			</if>
+			<if test="city != null and city != ''">
+				city = #{city},
+			</if>
+			<if test="photoUrl != null and photoUrl != ''">
+				photo_url = #{photoUrl},
+			</if>
+			<if test="motto != null and motto != ''">
+				motto = #{motto},
+			</if>
+			<if test="sexualOrientation != null">
+				sexual_orientation = #{sexualOrientation},
+			</if>
+			<if test="emotion != null and emotion != ''">
+				emotion = #{emotion},
+			</if>
+			<if test="ambition != null and ambition != ''">
+				ambition = #{ambition},
+			</if>
+			<if test="individuality != null and individuality != ''">
+				individuality = #{individuality},
+			</if>
+			<if test="knowSkill != null and knowSkill != ''">
+				know_skill = #{knowSkill},
+			</if>
+			<if test="footPrint != null and footPrint != ''">
+				foot_print = #{footPrint},
+			</if>
+			<if test="writeBook != null and writeBook != ''">
+				write_book = #{writeBook},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+			<if test="isRecommend != null">
+				isRecommend = #{isRecommend},
+			</if>
+			<if test="flowerCount != null">
+				flower_count = #{flowerCount},
+			</if>
+			<if test="isVIP != null">
+				isVIP = #{isVIP}
+			</if>
+			<if test="province != null and province != ''">
+				province = #{province},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from CLIENT_USER
+		where
+		id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,64 @@
+package com.popular.controller;
+
+import java.util.HashMap;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.popular.exception.IllegalException;
+import com.popular.model.TopicCollect;
+import com.popular.model.User;
+import com.popular.model._SystemConstants;
+import com.popular.service.TopicService;
+import com.popular.service.UserService;
+
+@RestController("userControllerAPI")
+@RequestMapping("api")
+public class UserController {
+	@Resource
+	UserService userService;
+
+	@Resource
+	TopicService topicService;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/user/{loginname}")
+	@ResponseBody
+	public User get(@PathVariable("loginname") String loginName)
+			throws Exception {
+		User user = userService.getUserByLoginName(loginName);
+		if (user == null)
+			throw new IllegalException(
+					"user '" + loginName + "' is not exists");
+		// 获取最新5条创建的主题
+		HashMap<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("authorId", user.getId());
+		// List<Topic> topicList = topicService.getTopics(queryParams);
+		return user;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/accesstoken")
+	@ResponseBody
+	public String verifyAccessToken(String accessToken)
+			throws IllegalException {
+		User user = userService.verifyAccessToken(accessToken);
+		if (user == null)
+			throw new IllegalException("validation fails");
+		return user.getLoginName();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/collection")
+	@ResponseBody
+	public List<TopicCollect> getTopicCollect(HttpServletRequest request) {
+		User user = (User) request
+				.getAttribute(_SystemConstants.SESSION_NAME_USER);
+		return userService.getCollectTopicByUserId(user.getId());
+	}
+
+}

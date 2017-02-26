@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.popular.dao.FlowerDao">
+	<resultMap id="flowerResultMap" type="com.popular.model.Flower">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sender" property="sender" jdbcType="INTEGER" />
+		<result column="recipient" property="recipient" jdbcType="INTEGER" />
+		<result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sender, recipient, send_time, create_time, update_time
+	</sql>
+
+	<select id="getFlowerBySenderAndRecipient" resultMap="flowerResultMap"
+		parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from flower where sender = #{sender} and recipient = #{recipient}
+	</select>
+
+	<select id="getFlowerById" resultMap="flowerResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from flower where id = #{id}
+	</select>
+
+	<insert id="add" parameterType="Object">
+		insert into flower (sender,
+		recipient, send_time, create_time, update_time)
+		values (#{sender},
+		#{recipient}, #{sendTime}, #{createTime},
+		#{updateTime})
+	</insert>
+
+	<update id="udpate" parameterType="Object">
+		update flower
+		<set>
+			<if test="sender != null">
+				sender = #{sender},
+			</if>
+			<if test="recipient != null">
+				recipient = #{recipient},
+			</if>
+			<if test="sendTime != null">
+				send_time = #{sendTime},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

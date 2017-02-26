@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+buildscript {
+  repositories {
+	jcenter {
+		url "http://jcenter.bintray.com/"
+	}
+  }
+  
+  dependencies {
+	classpath 'org.akhikhl.gretty:gretty:1.2.2'
+  }
+}
+apply plugin: 'org.akhikhl.gretty'
+
+war{
+	baseName ="popular"
+}
+
+dependencies {
+	compile project(':common')
+	compile project(':sub')
+}
+
+gretty {
+	port = 8080
+	contextPath ="/popular"
+	servletContainer = 'tomcat8'
+}
