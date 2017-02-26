@@ -1,0 +1,35 @@
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+buildscript {
+  repositories {
+    jcenter {
+        url "http://jcenter.bintray.com/"
+    }
+  }
+  
+  dependencies {
+    classpath 'org.akhikhl.gretty:gretty:1.2.2'
+  }
+}
+apply plugin: 'org.akhikhl.gretty' 
+
+war{  
+    baseName ="mobilePlatform"  
+} 
+
+dependencies {
+	compile project(':com.tibco.ma.common')
+	compile project(':com.tibco.ma.model')
+    compile project(':com.tibco.ma.core')
+    compile project(':com.tibco.ma.analytics')
+    compile project(':com.tibco.ma.notification')
+    compile project(':com.tibco.ma.workflow')
+}
+
+gretty {  
+    port = 8080
+    contextPath ="/mobilePlatform"  
+    servletContainer = 'tomcat7'  
+}

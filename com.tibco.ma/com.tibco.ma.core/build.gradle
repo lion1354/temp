@@ -1,0 +1,12 @@
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'com.tibco.ma.core',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':com.tibco.ma.model')
+    compile project(':com.tibco.ma.common')
+}

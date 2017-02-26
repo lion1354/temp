@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<global-method-security pre-post-annotations="enabled"/>
+
+
+	<beans:bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<filter-chain-map path-type="ant">
+		
+			<!-- <filter-chain pattern="*.js" filters="none"></filter-chain> -->
+			<filter-chain pattern="/app/lib/**" filters="none"></filter-chain>
+			<filter-chain pattern="/app/images/**" filters="none"></filter-chain>
+			<filter-chain pattern="/app/js/**" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/fanzone/**" filters="none"></filter-chain>
+			<filter-chain pattern="/app/stylesheets/**" filters="none"></filter-chain>
+			<!-- <filter-chain pattern="/#/**" filters="none"></filter-chain> -->
+			<filter-chain pattern="/" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/index.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.index.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.login.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.signUp.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/template/footer.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.checkEmail.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.activate.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/fanzone/activateSuccess.jsp" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/fanzone/failure.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/fanzone/resetPWDSuccess.jsp" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/fanzone/resetpwd.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.resetPassword.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.resetSuccess.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.resetFailed.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.resetTimeout.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.findPassword.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/template.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.document.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.help.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/home/home.docDetail.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/error/error.html" filters="none"></filter-chain>
+			<filter-chain pattern="/app/views/error/error.403.html" filters="none"></filter-chain>
+			
+			<filter-chain pattern="/api-doc/**" filters="none"></filter-chain>
+			<filter-chain pattern="/api-docs" filters="none"></filter-chain>
+			<filter-chain pattern="/api-docs/**" filters="none"></filter-chain>
+			
+			<filter-chain pattern="/index" filters="none"></filter-chain>
+			<filter-chain pattern="/login" filters="none"></filter-chain>
+			<filter-chain pattern="/signUp" filters="none"></filter-chain>
+			<filter-chain pattern="/checkEmail" filters="none"></filter-chain>
+			<filter-chain pattern="/activate" filters="none"></filter-chain>	
+			<filter-chain pattern="/findpassword" filters="none"></filter-chain>
+			<filter-chain pattern="/resetpassword" filters="none"></filter-chain>
+			<filter-chain pattern="/resetsuccess" filters="none"></filter-chain>
+			<filter-chain pattern="/resetfailed" filters="none"></filter-chain>
+			<filter-chain pattern="/resettimeout" filters="none"></filter-chain>
+			<filter-chain pattern="/register" filters="none"></filter-chain>
+			<filter-chain pattern="/checktimeout" filters="none"></filter-chain>
+			<filter-chain pattern="/checklogin" filters="none"></filter-chain>
+			<filter-chain pattern="/site/forgetPWD" filters="none"></filter-chain>
+			<filter-chain pattern="/resetPWD" filters="none"></filter-chain>
+			<filter-chain pattern="/register/activate/adminuser" filters="none"></filter-chain>
+			<filter-chain pattern="/documents" filters="none"></filter-chain>
+			<filter-chain pattern="/help" filters="none"></filter-chain>
+			<filter-chain pattern="/doc" filters="none"></filter-chain>
+			<filter-chain pattern="/error" filters="none"></filter-chain>
+			<filter-chain pattern="/error/403" filters="none"></filter-chain>
+			
+			<filter-chain pattern="/ma/1/shoRestResource" filters="none"/>
+			<filter-chain pattern="/ma/1/showImage" filters="none"></filter-chain>
+			
+			<filter-chain pattern="/apps/**" filters="none"></filter-chain>
+			<filter-chain pattern="/systemManagement/**" filters="none"></filter-chain>
+			<filter-chain pattern="/account/**" filters="none"></filter-chain>
+					
+			<filter-chain pattern="/objects/delete/**" filters="none"></filter-chain>
+			<filter-chain pattern="/objects" filters="none"></filter-chain>
+			<filter-chain pattern="/object" filters="none"></filter-chain>
+			<filter-chain pattern="/put" filters="none"></filter-chain>
+			<filter-chain pattern="/error" filters="none"></filter-chain>
+			<filter-chain pattern="/error404" filters="none"></filter-chain>
+			<filter-chain pattern="/customize" filters="none"></filter-chain>
+			<filter-chain pattern="/1/appSetting/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/classes/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/file/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/functions/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/user/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/custDevice/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/custNotification/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/custAnalytics/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/mailing/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/hybrid/**" filters="none"></filter-chain>
+			<filter-chain pattern="/1/mqtt/**" filters="none"></filter-chain>
+			
+           <filter-chain pattern="/**"
+				filters="securityContextFilter, logoutFilter, loginFilter, requestCacheFilter, 
+                  exceptionTranslator, filterSecurityInterceptor" />
+                  
+		</filter-chain-map>
+	</beans:bean>
+	
+	<beans:bean id="securityContextFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+		<beans:property name="securityContextRepository" ref="securityContextRepository" />
+	</beans:bean>
+	<beans:bean id="securityContextRepository" class="org.springframework.security.web.context.HttpSessionSecurityContextRepository" />
+
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+	    <beans:constructor-arg value="/#/login" />
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:ref bean="securityContextLogoutHandler"/>
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/app/views/j_spring_security_logout"/>
+	</beans:bean>
+	<beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+		<beans:property name="invalidateHttpSession" value="true" />
+	</beans:bean>
+
+	<beans:bean id="loginFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="authenticationSuccessHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+				<beans:property name="defaultTargetUrl" value="/login/dispatcher" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<beans:property name="defaultFailureUrl" value="/#/login" />
+			</beans:bean>
+		</beans:property>
+		
+		<beans:property name="filterProcessesUrl" value="/app/views/j_spring_security_check"/>
+		
+	</beans:bean>
+	<beans:bean id="requestCacheFilter" class="org.springframework.security.web.savedrequest.RequestCacheAwareFilter" />
+
+
+	<beans:bean id="sessionMgmtFilter" class="org.springframework.security.web.session.SessionManagementFilter">
+		<beans:constructor-arg ref="securityContextRepository" />
+		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
+	</beans:bean>
+
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:property name="maximumSessions" value="1" />
+	</beans:bean>
+	
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+	<beans:bean id="exceptionTranslator" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<beans:property name="authenticationEntryPoint">
+			<beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+				<beans:property name="loginFormUrl" value="/#/login" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="accessDeniedHandler">
+			<beans:bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+				<beans:property name="errorPage" value="/app/views/error/AccessDenied.jsp" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
+	
+	
+	<!-- used for authorize Tag -->
+	<beans:bean id="webPrivilegeEvaluator" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+		<beans:constructor-arg ref="filterSecurityInterceptor" />
+	</beans:bean>
+
+	<beans:bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
+		<beans:property name="securityMetadataSource" ref="maSecurityMetadataSource">
+		</beans:property>
+	</beans:bean>
+
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter">
+					<beans:property name="expressionHandler" ref="expressionHandler" />
+				</beans:bean>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+
+	<beans:bean id="expressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+
+	<beans:bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+		<beans:property name="providers">
+			<beans:list>
+				<beans:ref bean="authenticationProvider" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<beans:property name="userDetailsService" ref="maUserDetailService" />
+		<beans:property name="passwordEncoder">
+			<beans:bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
+		</beans:property>
+	</beans:bean>
+
+
+	<beans:bean id="maUserDetailService" class="com.tibco.ma.security.MaUserDetailService" />
+	
+	<beans:bean id="maSecurityMetadataSource" class="com.tibco.ma.security.MaInvocationSecurityMetadataSource" />
+
+
+</beans:beans>

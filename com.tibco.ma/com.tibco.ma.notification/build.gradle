@@ -1,0 +1,11 @@
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'com.tibco.ma.notification',
+                   'Implementation-Version': version
+    }
+}
+
+dependencies {
+    compile project(':com.tibco.ma.core')
+}
