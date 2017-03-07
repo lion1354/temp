@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<service>
+	<serviceEntity serviceID="QUOTE_DETAIL">
+		<entity>
+			<reqParameters parameters="locale|delay|tradeDay" />
+			<ruleSets>
+				<ruleSet type="mandatory" fields="prodAltNum|prodCdeAlt|delay" />
+				<ruleSet type="maddfa" fields="prodAltNum|prodCdeAlt|delay"
+					associateFields="market" />
+			</ruleSets>
+			<serciceName>testserciceName</serciceName>
+		</entity>
+	</serviceEntity>
+	<serviceEntity serviceID="QUOTE_LIST">
+		<entity>
+			<reqParameters parameters="locale|delay|tradeDay" />
+			<ruleSet type="mandatory" fields="prodAltNum|prodCdeAlt|delay" />
+			<ruleSet type="maddfa" fields="prodAltNum|prodCdeAlt|delay"
+				associateFields="market" />
+			<serciceName>testsadserciceName</serciceName>
+		</entity>
+	</serviceEntity>
+</service>
