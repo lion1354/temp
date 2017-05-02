@@ -98,9 +98,11 @@ public class CooperativeService extends BaseService
 		}
 
 		// 保存数据库记录
-
 		cooperative.setCreateUserName(sessionUser.getUserName());
 		cooperative.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		cooperative.setLastModifyUserId(sessionUser.getId());
+		cooperative.setLastModifyUserName(sessionUser.getUserName());
+		cooperative.setLastModifyDate(new Timestamp(System.currentTimeMillis()));
 		insertIntoTable(cooperative, null, null);
 	}
 

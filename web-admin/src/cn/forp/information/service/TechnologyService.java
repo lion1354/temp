@@ -121,6 +121,9 @@ public class TechnologyService extends BaseService
 		// 保存数据库记录
 		technology.setCreateUserName(sessionUser.getUserName());
 		technology.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		technology.setLastModifyUserId(sessionUser.getId());
+		technology.setLastModifyUserName(sessionUser.getUserName());
+		technology.setLastModifyDate(new Timestamp(System.currentTimeMillis()));
 		insertIntoTable(technology);
 	}
 

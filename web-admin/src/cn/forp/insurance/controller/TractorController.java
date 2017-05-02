@@ -190,6 +190,7 @@ public class TractorController extends BaseController
 		}
 		else
 		{
+			tractor.setQiandanDate(new Date());
 			tractor.setQiandanYear(String.valueOf(new Date().getYear() + 1900));
 		}
 
@@ -201,9 +202,7 @@ public class TractorController extends BaseController
 		if (tractor.getType() != 2)
 			tractor.setDriverHuiFeiMoney(tractor.getDriverMaintenHuiFeiMoney() + tractor.getDriverOperateHuiFeiMoney());
 
-		tractor.setFormStatus(0);
 		tractor.setSubmitDate(new Date());
-		tractor.setChargingStatus("N");
 		String xianId = user.getItem2();
 		tractor.setXianId(StringUtils.isBlank(xianId) ? 0 : Integer.parseInt(xianId));
 		if (!editMode)
@@ -222,6 +221,8 @@ public class TractorController extends BaseController
 
 			try
 			{
+				tractor.setFormStatus(0);
+				tractor.setChargingStatus("N");
 				create(tractor, request);
 			}
 			catch (Exception e)
@@ -260,7 +261,7 @@ public class TractorController extends BaseController
 	 * @param req
 	 *            Request请求参数
 	 */
-	private String create(Tractor tractor, HttpServletRequest request) throws Exception
+	private void create(Tractor tractor, HttpServletRequest request) throws Exception
 	{
 		User user = getSessionUser(request);
 
@@ -268,8 +269,6 @@ public class TractorController extends BaseController
 		// 操作日志
 		userService.writeSystemLog(user, request, "添加保单信息",
 				"操作人姓名：" + user.getUserName() + "\r\n操作账号：" + user.getLoginName(), null);
-
-		return success("OK");
 	}
 
 	/**
@@ -280,7 +279,7 @@ public class TractorController extends BaseController
 	 * @param req
 	 *            Request请求参数
 	 */
-	private String update(Tractor tractor, HttpServletRequest request) throws Exception
+	private void update(Tractor tractor, HttpServletRequest request) throws Exception
 	{
 		User user = getSessionUser(request);
 		String[] includeFields = { "owner", "idCard", "address", "telNum", "carNum", "factoryNum", "engineNum",
@@ -290,13 +289,11 @@ public class TractorController extends BaseController
 				"yunZhuanYiWaiShangHaiBaoFei", "weiXiuBaoYangZuoYeBaoFei", "buJiMianBuLvBaoFei",
 				"duZhuZuoYeRenYuanShangHaiBaoFei", "ziRanSunShiBaoFei", "zhuangYunSunShiBaoFei",
 				"feiShiGuBuJianSunShiBaoFei", "totalDikouMoney", "insuranceStart", "insuranceEnd", "caizhengbutie",
-				"qiandanDate", "qiandanDate", "formStatus", "submitDate", "chargingStatus" };
+				"qiandanDate", "qiandanDate", "submitDate" };
 		tractorService.update(tractor, includeFields);
 		// 操作日志
 		userService.writeSystemLog(user, request, "修改保单信息",
 				"操作人姓名：" + user.getUserName() + "\r\n操作账号：" + user.getLoginName(), null);
-
-		return success("OK");
 	}
 
 	/**
@@ -421,8 +418,12 @@ public class TractorController extends BaseController
 	public ModelAndView showInsurance(@PathVariable String id, @PathVariable String type, @PathVariable String edit,
 			HttpServletRequest req) throws Exception
 	{
-		req.setAttribute("insuranceTractorId", id);
 		req.setAttribute("editMode", true);
+		req.setAttribute("insuranceTractorId", id);
+
+		// Tractor tractor = tractorService.searchByInsuranceTractorId(id);
+		// int type = tractor.getType();
+
 		if (StringUtils.isNotBlank(edit) && Boolean.parseBoolean(edit) == true)
 		{
 			req.setAttribute("cannotModify", false);
@@ -519,8 +520,24 @@ public class TractorController extends BaseController
 		List<SimpleObject> provinces = userService.getAllProvince();
 		// 区县
 		List<SimpleObject> regions = userService.getAllRegion();
+		List<SimpleObject> regionsList = new ArrayList<SimpleObject>();
+		int i = 0;
+		for (SimpleObject so : regions)
+		{
+			if (i != Integer.parseInt(so.getRemark()))
+			{
+				i++;
+				SimpleObject newSo = new SimpleObject();
+				newSo.setId("0");
+				newSo.setName("所有区县");
+				newSo.setRemark(so.getRemark());
+				regionsList.add(newSo);
+			}
+			regionsList.add(so);
+		}
+		regionsList.addAll(regions);
 		json.put("provinces", provinces);
-		json.put("regions", regions);
+		json.put("regions", regionsList);
 
 		return json;
 	}

@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge;Chrome=1">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta http-equiv="Expires" CONTENT="0">
+	<meta http-equiv="Cache-Control" CONTENT="no-cache">   
+	<meta http-equiv="Pragma" CONTENT="no-cache">
+	<title>陕西省农业机械安全协会 - 管理平台</title>
+	<!-- jQuery -->
+	<script src="js/jquery/jquery.min.js"></script>
+	<script src="js/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src='js/jquery/jquery.cookie.js'></script>
+	<script type="text/javascript" src='js/jquery/jquery.center.js'></script>
+	<script type="text/javascript" src='js/jquery/jquery.md5.js'></script>
+	<script type="text/javascript" src='js/common.js'></script>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css"/>
+	<script src="js/bootstrap/bootstrap.min.js"></script>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="js/font-awesome/font-awesome.min.css"/>
+	<link rel='stylesheet' href='css/index.css'>
+	<!--link rel='stylesheet' href='css/common.css'-->
+</head>
+
+<body style="margin: 0px;">
+<div class="login_top_bg">
+	<img src="image/logo_top_bg.jpg" class="login_bg_img" />
+	<div class="login_top_in"><div class="login_tx_box"><img id='userHeadImg' src="" class="login_tx_img fl" /></div></div>
+	<div class="login_up_box"><div class="login_up_in"></div><center><span>陕西省农业机械安全协会 - 管理平台</span></center></div>
+</div>
+
+<div class="login_bottom_box">
+	<div id='msgDiv' style='text-align: center; padding-top: 5px; vertical-align: bottom;'>&nbsp;</div>
+	<!--div class="login_bottom_in">
+		<div class="input-group" style="position:relative;">
+		<span class="input-group-addon" id="sizing-addon1">@</span>
+		<span class="lg_jg_tb"><i class="fa fa-home fa-lg"></i></span>
+		<input id="domain" class="form-control jgmc_inputs" placeholder="机构名称" aria-describedby="sizing-addon1" title="机构名称">
+	</div-->
+
+	<div class="input-group" style="position:relative;">
+		<span class="input-group-addon" id="sizing-addon2">@</span>
+		<span class="lg_jg_tb"><i class="fa fa-user fa-lg"></i></span>
+		<input id='userName' class="form-control jgmc_inputs" placeholder="账号名称" aria-describedby="sizing-addon2" title="账号名称">
+	</div>
+
+	<div class="input-group" style="position:relative;">
+		<span class="input-group-addon" id="sizing-addon3">@</span>
+		<span class="lg_jg_mm"><i class="fa fa-lock fa-lg"></i></span>
+		<input id='password' type="password" class="form-control" placeholder="密码" aria-describedby="sizing-addon3" title="密码">
+	</div>
+
+	<div class="jz_box jz_box2"><button id='btnLogin' type="button" class="dl_btn" onclick='doLogin();'>登录</button></div>
+</div>
+
+<!--div class="beian_foot">陕ICP备14008853号-2</div-->
+</body>
+
+<script>
+if (self != top)
+	top.location.href = self.location.href;
+
+// 附件存储引擎
+var $AttachmentEngine = 'file';
+// 顽兔平台命名空间
+var $AlibabaMediaNameSpace = 'forp';
+
+var isProcessing = false;
+
+/**
+ * jQuery初始化
+ */
+$(function()
+{
+	// 兼容性规范：检测IE版本，低于IE10，直接提示下载。
+	if ($.browser.msie && $.browser.version.split('.')[0] < 10)
+	{
+		$('body').empty();
+		alert('您的浏览器版本过低，严重影响平台的运行性能和展示效果！\r\n点击“确定”按钮下载、安装浏览器的新版本。');
+		location.href = 'http://rj.baidu.com/soft/detail/14744.html';
+		return;
+	}
+
+	// 位置
+	var tops = $(".login_tx_box").height();
+	$(".login_tx_img").css({"top": (tops - $(".login_tx_img").height()) / 2 + 19, "left" : 0}).show();
+	$('.login_bottom_box').height($(window).height() - tops) + "px";
+	// 头像
+	var userHeadImgFileName = (null == $.cookie('userHeadImg') || '' == $.cookie('userHeadImg') ? 'default.png' : $.cookie('userHeadImg'));
+	$('#userHeadImg').attr('src', getUserAvatarUrl(userHeadImgFileName, $.cookie('domainId')));
+	// 回填登录系统
+	// if (null == $.cookie('domainName') || '' == $.cookie('domainName'))
+	//	$('#domain').focus();
+	// else
+	{
+		//$('#domain').val($.cookie('domainName'));
+
+		if (null == $.cookie('userName') || '' == $.cookie('userName'))
+			$('#userName').focus();
+		else
+		{
+			$('#userName').val($.cookie('userName'))
+			$('#password').focus();
+		}
+	}
+});
+
+/**
+ * Key down event
+ */
+document.onkeydown = function (e)
+{
+	if (isProcessing)
+		return;
+
+	e = e ? e : event;
+	if (13 == e.keyCode)
+    	doLogin();
+}
+
+/**
+ * 屏幕尺寸变化event
+ */
+onresize = function()
+{
+	// 位置
+	var tops = $(".login_tx_box").height();
+	$(".login_tx_img").css({"top": (tops - $(".login_tx_img").height()) / 2 + 19, "left" : 0}).show();
+	$('.login_bottom_box').height($(window).height() - tops) + "px";
+}
+
+/**
+ * 获取用户的头像图片URL
+ *
+ * @param avatar			头像文件名称
+ * @param domainId		域ID
+ */
+function getUserAvatarUrl(avatar, domainId)
+{
+	if ('file' == $AttachmentEngine)
+		return 'disk-file/user-avatar/' + ('default.png' == avatar ? '' : domainId + '/') + avatar;
+	else
+		if ('mongodb' == $AttachmentEngine)
+			return 'third/mongodb/' + avatar;
+		else
+			if ('alibaba' == $AttachmentEngine)
+				return 'http://' + $AlibabaMediaNameSpace + '.image.alimmdn.com/user-avatar/' + avatar;
+
+	return '';
+}
+
+/**
+ * 登录系统
+ */
+function doLogin()
+{
+	$('#msgDiv').html('&nbsp;');
+
+	// 有效性校验
+	var isOK = true, warnMsg = '';
+
+	/*
+	if (0 == $('#domain').val().trim().length)
+	{
+		isOK = false;
+		warnMsg = '请输入“机构名称”！';
+		$('#domain').focus();
+	}
+	else
+	*/
+		if (0 == $('#userName').val().trim().length)
+		{
+			isOK = false;
+			warnMsg = '请输入“账号名称”！';
+			$('#userName').focus();
+		}
+		else
+			if (0 == $('#password').val().trim().length)
+			{
+				isOK = false;
+				warnMsg = '请输入“密码”！';
+				$('#password').focus();
+			}
+
+	if (isOK)
+	{
+		isProcessing = true;
+		$('#btnLogin').text('登录中......').prop('disabled', 'true');
+		$.post
+		(
+			'platform/logon', {productId: 1, userName: $('#userName').val(), passwd: $.md5('Forp_' + $('#password').val())},
+			function(rsp, textStatus, jqXHR)
+			{
+				if (rsp.success)
+				{
+					// Cookie缓存用户基本信息
+					$.cookie('userId', rsp.userId, {expires: 365});
+					$.cookie('userName', $('#userName').val(), {expires: 365});
+					$.cookie('domainId', rsp.domainId, {expires: 365});
+					$.cookie('domainName', $('#domain').val(), {expires: 365});
+					$.cookie('userHeadImg', rsp.userHeadImg, {expires: 365});
+					// 默认桌面风格
+					if (null == $.cookie('layout') || '' == $.cookie('layout'))
+						$.cookie('layout', 'default', {expires: 365});
+
+					window.location.href = 'home';
+				}
+				else
+				{
+					isProcessing = false;
+					$('#btnLogin').text('登录').prop('disabled', '');
+
+					showMessage(rsp.msg);
+				}
+			}
+		);
+	}
+	else
+		showMessage(warnMsg);
+}
+
+/**
+ * 显示登录错误信息
+ */
+function showMessage(msg)
+{
+	$('#msgDiv').html('<img src="image/sound.png"><span style="margin-top: 5px; padding-left: 5px; color: red; font-size: 14px; word-break: break-all;">' + msg + '</span>')
+		.show()
+		.stop(true).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+}
+</script>
+
+</html>

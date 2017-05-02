@@ -1,0 +1,122 @@
+/**
+ * Common CSS
+ *
+ * Copyright © 2015, Xi'an HuaYu iStudy Network Technology Co., LTD
+ * All Rights Reserved.
+ *
+ * http://www.hy-ix.com
+ */
+
+body {overflow: hidden !important; background: white; color: #777}
+
+* {font-family: 'Microsoft YaHei', tahoma, arial; font-weight: normal; font-size : 14px;}
+
+/* Form中的表格行距 */
+form table td {padding-top: 5px; color: #666;}
+
+.form-inline {display: inline-block; margin-left: 15px;}
+
+/* 全局Loading Mask层样式 */
+.interruption {position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: transparent;}
+.interruption .loading {width: 220px; height: 60px; border-radius: 8px; border: 1px solid #000000; position: absolute; top: 50%; left: 50%; margin-top: -30px; margin-left: -110px; background-color: #000000; color: #ddd; text-align: center; -webkit-box-shadow: 0 0 2px 2px rgba(128,128,128,.8); box-shadow: 0 0 2px 2px rgba(128,128,128,.8);}
+.interruption .loading img {height: 36px; vertical-align: middle; padding-right: 5px;}
+.interruption .loading span {line-height: 60px; vertical-align: middle; font-size: 16px;}
+
+/*------------------------------------------------------------------------------------------
+ *		Bootstrap补丁
+ *------------------------------------------------------------------------------------------*/
+
+/* readonly 去除默认的灰色背景 */
+.form-control[readonly], .form-control {background-color: rgba(249, 249, 249, 0); opacity: 1;}
+label {font-weight: normal;}
+.input-sm {font-size: 13px; padding: 5px; color: #666}
+.form-horizontal .checkbox, .form-horizontal .checkbox-inline, .form-horizontal .radio, .form-horizontal .radio-inline {padding-top: 0px;}
+
+/* ；浏览器自动回填组件背景色 */
+input:-webkit-autofill,
+select:-webkit-autofill,
+textarea:-webkit-autofill {-webkit-box-shadow: 0 0 0 1000px white inset !important;}
+
+/* 必填项标识 */
+.required {background-image: url(../image/required.png) !important; background-repeat: no-repeat; background-position: right center;}
+.form-group {color: #777}
+/* Form边距
+.form-horizontal {padding: 10px;}
+.form-group {margin-bottom: 5px;} */
+/* 标签文字左右边距
+label.col-lg-1, label.col-lg-10, label.col-lg-11, label.col-lg-12, label.col-lg-2, label.col-lg-3, label.col-lg-4, label.col-lg-5, label.col-lg-6, label.col-lg-7, label.col-lg-8, label.col-lg-9, label.col-md-1, label.col-md-10, label.col-md-11, label.col-md-12, label.col-md-2, label.col-md-3, label.col-md-4, label.col-md-5, label.col-md-6, label.col-md-7, label.col-md-8, label.col-md-9, label.col-sm-1, label.col-sm-10, label.col-sm-11, label.col-sm-12, label.col-sm-2, label.col-sm-3, label.col-sm-4, label.col-sm-5, label.col-sm-6, label.col-sm-7, label.col-sm-8, label.col-sm-9, label.col-xs-1, label.col-xs-10, label.col-xs-11, label.col-xs-12, label.col-xs-2, label.col-xs-3, label.col-xs-4, label.col-xs-5, label.col-xs-6, label.col-xs-7, label.col-xs-8, label.col-xs-9
+{
+	padding-right: 0px;
+	padding-left: 0px;
+} */
+/* 输入框左边距
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9
+{
+	padding-right: 5px;
+	padding-left: 5px;
+}
+ */
+
+/*------------------------------------------------------------------------------------------
+ *		iDialog补丁
+ *------------------------------------------------------------------------------------------*/
+/* 标题字体颜色 */
+.i-dialog .i-target {color: #025b80;}
+
+/*------------------------------------------------------------------------------------------
+ *		Bootstrap Table补丁
+ *------------------------------------------------------------------------------------------*/
+/* 行选中背景色 */
+.fixed-table-container tbody .selected td {background-color: #fcfcfc; border-color: #c2ddf2; border-bottom: solid 1px #c2ddf2;}
+.table-hover>tbody>tr:hover td{background-color: #fcfcfc; border-color: #c2ddf2; border-bottom: solid 1px #c2ddf2;}
+/* 行文字垂直对齐 */
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {color: #777; vertical-align: middle;}
+/* 列头文字，背景色 */
+.fixed-table-container tbody td .th-inner, .fixed-table-container thead th .th-inner {color: #025b80; background-color: #fafafa}
+/* 边角 */
+.fixed-table-container {border-radius: 0px; webkit-border-radius: 0px; -moz-border-radius: 0px; border: 1px solid #e1e6eb;}	/* 分页栏底部间距 padding-bottom: 30px !important; */
+/* 表头底部横线 */
+.bootstrap-table .table>thead>tr>th {border-bottom: 0px;}
+/* 复选框/单选框列背景色 */
+.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th {background: #fafafa;}
+/* 表格边框 */
+.bootstrap-table .table {border-bottom: 1px solid #e1e6eb; border-radius: 0px;}
+.fixed-table-container thead th {border-left: 1px solid #e1e6eb;}
+.fixed-table-container tbody td {border-left: 1px solid #edeef3;}
+/* 页面顶部间距 */
+.fixed-table-toolbar .bs-bars {margin-top: 0px; margin-bottom: 5px;}
+
+/* 底部分页区域
+.fixed-table-pagination {height: 56px; background: #f2f3f7; border: solid 1px #f2f3f7;}
+*/
+
+/**------------------------------------------------------------------------------------------
+ *		Validate
+ *------------------------------------------------------------------------------------------*/
+.input-invalidate {border: solid 1px red;}
+
+/**------------------------------------------------------------------------------------------
+ *		ExtJs 补丁
+ *------------------------------------------------------------------------------------------*/
+/* Tree字体 */
+span.x-column-header-text-inner {color: #025b80; font-size: 14px}
+span.x-tree-node-text {color: #777; font-size: 14px;}
+div.x-grid-cell-inner  {color: #777; font-size: 14px; height: 30px; padding: 8px 10px 4px;}
+.x-grid-item {font-family: '微软雅黑', tahoma, arial; font-size: 14px;}
+/* Tree节点图标 */
+.x-tree-icon {height: 16px; width: 16px; background-size: 100%; margin-top: -1px;}
+/* Grid行高度*/
+.x-grid-cell-inner-treecolumn {padding: 10px 5px 10px 5px;}
+ /* Grid行选中，进入背景色 */
+.x-grid-item-selected, .x-grid-item-over {background-color: #fcfcfc}
+/* 列头 */
+.x-column-header {border-right: 1px solid #e1e6eb; background-color: #fafafa; height: 40px}
+/* 单元格：竖线颜色，高度 */
+.x-grid-with-col-lines .x-grid-cell {border-color: #edeef3; height: 37px;}
+/* 单元格：横线颜色 */
+.x-grid-with-row-lines .x-grid-item {border-color: #edeef3;}
+/* 单元格：竖向文字对齐方式 */
+.x-grid-td {vertical-align: middle;}
+/* 单元格：去除选中后的边框 */
+.x-grid-item-focused .x-grid-cell-inner {z-index: auto;}
+.x-border-box, .x-border-box * {font-weight: normal}

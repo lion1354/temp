@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.forp.framework.core.FORP;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import cn.forp.framework.core.BaseService;
@@ -24,7 +27,7 @@ import cn.forp.insurance.vo.Member;
 /**
  * 会员管理Service
  *
- * @author
+ * @author  GuoPing
  */
 @Service
 public class MemberService extends BaseService
@@ -37,21 +40,17 @@ public class MemberService extends BaseService
 	/**
 	 * 分页查询列表
 	 * 
-	 * @param user
-	 *            操作人
-	 * @param content
-	 *            账号(手机号码)，真实姓名，身份证号，企业名称, 法人姓名, 组织机构码, 统一社会信用码
-	 * @param type
-	 *            会员类型
-	 * @param ps
-	 *            分页排序信息
+	 * @param user    操作人
+	 * @param content 账号(手机号码)，真实姓名，身份证号，企业名称, 法人姓名, 组织机构码, 统一社会信用码
+	 * @param type    会员类型
+	 * @param ps      分页排序信息
 	 */
 	public Page<Member> search(User user, String content, int type, PageSort ps) throws Exception
 	{
 		lg.debug("searchContent：{}", content);
 
 		String sql = "select * from Sys_Member_Info where 1=1";
-		List<Object> params = new ArrayList<Object>();
+		List<Object> params = new ArrayList<>();
 
 		if (StringUtils.isNotBlank(content))
 		{
@@ -78,46 +77,55 @@ public class MemberService extends BaseService
 	/**
 	 * 添加
 	 *
-	 * @param sessionUser
-	 *            操作人
-	 * @param user
-	 *            会员信息
+	 * @param sessionUser 操作人
+	 * @param member      会员信息
 	 */
 	public long create(User sessionUser, Member member) throws Exception
 	{
+		// 重名检查
+		if (isFieldDuplicate("Sys_Member_Info", "MobilePhone", member.getMobilePhone(), null))
+			throw new BusinessException("账号“" + member.getMobilePhone() + "”已注册，请检查您的输入！");
+
+		member.setPassword(DigestUtils.md5Hex(FORP.MD5_SALT_PREFIX + member.getPassword()));
 		member.setCreateDate(new Date());
 		member.setCreateUserName(sessionUser.getUserName());
 
-		long userId = insertIntoTable(member, null,
-				new String[] { "lastModifyDate", "lastModifyUserId", "lastModifyUserName" });
-
-		return userId;
+		return insertIntoTable(member, null, new String[] {"lastModifyDate", "lastModifyUserId", "lastModifyUserName"});
 	}
 
 	/**
 	 * 修改
 	 *
-	 * @param sessionUser
-	 *            操作人
-	 * @param user
-	 *            会员信息
+	 * @param sessionUser 操作人
+	 * @param member      会员信息
 	 */
 	public void update(User sessionUser, Member member) throws Exception
 	{
+		// 1 重名检查
+		if (isFieldDuplicate("Sys_Member_Info", "MobilePhone", member.getMobilePhone(), "ID<>" + member.getId()))
+			throw new BusinessException("账号“" + member.getMobilePhone() + "”已注册，请检查您的输入！");
+
+		// 2 检查密码是否改动
+		SqlRowSet rs = jdbc.queryForRowSet("select Password from Sys_Member_Info where ID=?", member.getId());
+		rs.next();
+		String oldPassword = rs.getString("Password");
+		if (oldPassword.equals(member.getPassword()))
+			member.setPassword(oldPassword);			// 没有修改密码
+		else
+			member.setPassword(DigestUtils.md5Hex(FORP.MD5_SALT_PREFIX + member.getPassword()));
+
 		member.setLastModifyDate(new Date());
 		member.setLastModifyUserID(sessionUser.getId());
 		member.setLastModifyUserName(sessionUser.getUserName());
 
-		updateTable(member, null, new String[] { "createDate", "createUserName" });
+		updateTable(member, null, new String[] {"createDate", "createUserName"});
 		lg.info("修改用户：" + member.getId());
 	}
 
 	/**
 	 * 删除
 	 * 
-	 * @param id
-	 *            会员编号
-	 * @throws Exception
+	 * @param id  会员编号
 	 */
 	public void delete(Long id) throws Exception
 	{

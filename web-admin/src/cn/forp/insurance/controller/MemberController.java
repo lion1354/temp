@@ -87,8 +87,7 @@ public class MemberController extends BaseController
 
 		service.create(su, member);
 		// 操作日志
-		service.writeSystemLog(su, req, "添加新会员", "会员姓名：" + member.getUserName() + "\r\n登录账号：" + member.getMobilePhone(),
-				null);
+		service.writeSystemLog(su, req, "添加新会员", "会员姓名：" + member.getUserName() + "\r\n登录账号：" + member.getMobilePhone(), null);
 
 		return success("OK");
 	}
@@ -107,8 +106,7 @@ public class MemberController extends BaseController
 
 		service.update(su, member);
 		// 操作日志
-		service.writeSystemLog(su, req, "修改会员信息",
-				"会员姓名：" + member.getUserName() + "\r\n登录账号：" + member.getMobilePhone(), null);
+		service.writeSystemLog(su, req, "修改会员信息", "会员姓名：" + member.getUserName() + "\r\n登录账号：" + member.getMobilePhone(), null);
 
 		return success("OK");
 	}

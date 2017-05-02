@@ -5,13 +5,8 @@
  */
 package cn.forp.information.controller;
 
-import cn.forp.framework.core.controller.BaseController;
-import cn.forp.framework.core.controller.IForm;
-import cn.forp.framework.core.vo.Page;
-import cn.forp.framework.platform.vo.User;
-import cn.forp.information.service.MerchantService;
-import cn.forp.information.vo.Consultation;
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import cn.forp.framework.core.controller.BaseController;
+import cn.forp.framework.core.controller.IForm;
+import cn.forp.framework.core.vo.Page;
+import cn.forp.framework.platform.vo.User;
+import cn.forp.information.service.MerchantService;
+import cn.forp.information.vo.Consultation;
 
 /**
  * 入驻商户管理Controller

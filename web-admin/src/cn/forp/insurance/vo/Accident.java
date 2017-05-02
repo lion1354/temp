@@ -7,6 +7,9 @@ package cn.forp.insurance.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import cn.forp.framework.core.rowmapper.DBColumn;
 import cn.forp.framework.core.rowmapper.DBTable;
@@ -26,6 +29,8 @@ public class Accident implements Serializable
 	private Long id;
 	@DBColumn(name = "FK_InsuranceId")
 	private String insuranceId; // 保单ID(保单号)
+	@DBColumn(name = "FK_AccidentId")
+	private String accidentId; // 事故ID,报案,查勘ID
 	private String caseName; // 报案人姓名
 	private String caseTel; // 报案人联系电话
 	private String memberName; // 出险会员姓名
@@ -37,7 +42,7 @@ public class Accident implements Serializable
 	private String dangerLatitude; // 出险地点纬度
 	private Integer reason; // 出险原因 1操作失误、2环境因素、3第三方原因、4机件失灵、5其它
 	private Integer responsibility; // 责任类型 1全责，2主责，3同责，4次责，5无责
-	private Integer accident; // 案件情形 1翻机、2坠落、3碰撞、4玻璃单独破碎翻机、5自燃、6其它
+	private Integer accident; // 案件情形 1翻机、2坠落、3碰撞、4玻璃单独破碎、5自燃、6其它
 	private String situation; // 损失情况 1本机损失、2驾驶人伤、3随机人伤（只有机械类型为收割机才有该选项）、4第三方财产损失、5第三方人伤 用,分割，如1,2,3,4
 	@DBColumn(name = "")
 	private Integer situation1 = 0;
@@ -52,17 +57,61 @@ public class Accident implements Serializable
 	private String driverName; // 驾驶员姓名
 	private Date reportTime; // 报案时间
 	private String reportAddress = ""; // 报案地点
-	private String reportrLongitude; // 报案地点经度
+	private String reportLongitude; // 报案地点经度
 	private String reportLatitude; // 报案地点纬度
 	private String paymentBank = ""; // 理赔款接收账户银行
 	private String paymentName = ""; // 理赔款接收账户名
-	private String paymentAccount = ""; // 理赔款接收账账号
+	private String paymentAccount = ""; // 理赔款接收账户号
 	private Integer status; // 事故类型 1.报案 2.查勘 3.理赔
-	private Integer approvalStatus = 0; // 审批状态 0未审批，1未通过，2已通过，3关闭
+	private Integer approvalStatus = 0; // 审批状态 0未审批，1未通过，2待赔付（已通过），3关闭，4已赔付（已通过）
 	private String approvalRemark = ""; // 审批原因
+	private String provinceId; // 所属区域
+	private String regionId;// 所属县
+	private Integer unusual; // 案件异常 1是， 0否
+	private String damageMoney = ""; // 定损金额
+	private String paymentMoney = ""; // 赔付金额
+	private String swiftNumber = "";// 银行流水号
 	private String createUserName; // 创建人
 	private Date lastModifyDate; // 修改日期
 	private String lastModifyUserName; // 修改人
+
+	/*
+	 * 查勘图片
+	 */
+	@DBColumn(name = "")
+	private List<String> zhengtiList;
+	@DBColumn(name = "")
+	private List<String> jubuList;
+	@DBColumn(name = "")
+	private List<String> xingshiList;
+	@DBColumn(name = "")
+	private List<String> jiashiList;
+	@DBColumn(name = "")
+	private List<String> jipaiList;
+	@DBColumn(name = "")
+	private List<String> jijiaList;
+	@DBColumn(name = "")
+	private List<String> shangzheList;
+	@DBColumn(name = "")
+	private List<String> buweiList;
+
+	/*
+	 * 理赔图片
+	 */
+	@DBColumn(name = "")
+	private List<String> sunshiList;
+	@DBColumn(name = "")
+	private List<String> weixiuList;
+	@DBColumn(name = "")
+	private List<String> zerenList;
+	@DBColumn(name = "")
+	private List<String> panjueList;
+	@DBColumn(name = "")
+	private List<String> zhenduanList;
+	@DBColumn(name = "")
+	private List<String> fapiaoList;
+	@DBColumn(name = "")
+	private List<String> yongyaoList;
 
 	/**
 	 * @return the id
@@ -96,6 +145,23 @@ public class Accident implements Serializable
 	public void setInsuranceId(String insuranceId)
 	{
 		this.insuranceId = insuranceId;
+	}
+
+	/**
+	 * @return the accidentId
+	 */
+	public String getAccidentId()
+	{
+		return accidentId;
+	}
+
+	/**
+	 * @param accidentId
+	 *            the accidentId to set
+	 */
+	public void setAccidentId(String accidentId)
+	{
+		this.accidentId = accidentId;
 	}
 
 	/**
@@ -456,20 +522,20 @@ public class Accident implements Serializable
 	}
 
 	/**
-	 * @return the reportrLongitude
+	 * @return the reportLongitude
 	 */
-	public String getReportrLongitude()
+	public String getReportLongitude()
 	{
-		return reportrLongitude;
+		return reportLongitude;
 	}
 
 	/**
-	 * @param reportrLongitude
-	 *            the reportrLongitude to set
+	 * @param reportLongitude
+	 *            the reportLongitude to set
 	 */
-	public void setReportrLongitude(String reportrLongitude)
+	public void setReportLongitude(String reportLongitude)
 	{
-		this.reportrLongitude = reportrLongitude;
+		this.reportLongitude = reportLongitude;
 	}
 
 	/**
@@ -588,7 +654,121 @@ public class Accident implements Serializable
 	 */
 	public void setApprovalRemark(String approvalRemark)
 	{
-		this.approvalRemark = approvalRemark;
+		if (StringUtils.isNotBlank(approvalRemark))
+		{
+			this.approvalRemark = approvalRemark;
+		}
+	}
+
+	/**
+	 * @return the provinceId
+	 */
+	public String getProvinceId()
+	{
+		return provinceId;
+	}
+
+	/**
+	 * @param provinceId
+	 *            the provinceId to set
+	 */
+	public void setProvinceId(String provinceId)
+	{
+		this.provinceId = provinceId;
+	}
+
+	/**
+	 * @return the regionId
+	 */
+	public String getRegionId()
+	{
+		return regionId;
+	}
+
+	/**
+	 * @param regionId
+	 *            the regionId to set
+	 */
+	public void setRegionId(String regionId)
+	{
+		this.regionId = regionId;
+	}
+
+	/**
+	 * @return the unusual
+	 */
+	public Integer getUnusual()
+	{
+		return unusual;
+	}
+
+	/**
+	 * @param unusual
+	 *            the unusual to set
+	 */
+	public void setUnusual(Integer unusual)
+	{
+		this.unusual = unusual;
+	}
+
+	/**
+	 * @return the damageMoney
+	 */
+	public String getDamageMoney()
+	{
+		return damageMoney;
+	}
+
+	/**
+	 * @param damageMoney
+	 *            the damageMoney to set
+	 */
+	public void setDamageMoney(String damageMoney)
+	{
+		if (StringUtils.isNotBlank(damageMoney))
+		{
+			this.damageMoney = damageMoney;
+		}
+	}
+
+	/**
+	 * @return the paymentMoney
+	 */
+	public String getPaymentMoney()
+	{
+		return paymentMoney;
+	}
+
+	/**
+	 * @param paymentMoney
+	 *            the paymentMoney to set
+	 */
+	public void setPaymentMoney(String paymentMoney)
+	{
+		if (StringUtils.isNotBlank(paymentMoney))
+		{
+			this.paymentMoney = paymentMoney;
+		}
+	}
+
+	/**
+	 * @return the swiftNumber
+	 */
+	public String getSwiftNumber()
+	{
+		return swiftNumber;
+	}
+
+	/**
+	 * @param swiftNumber
+	 *            the swiftNumber to set
+	 */
+	public void setSwiftNumber(String swiftNumber)
+	{
+		if (StringUtils.isNotBlank(swiftNumber))
+		{
+			this.swiftNumber = swiftNumber;
+		}
 	}
 
 	/**
@@ -640,6 +820,261 @@ public class Accident implements Serializable
 	public void setLastModifyUserName(String lastModifyUserName)
 	{
 		this.lastModifyUserName = lastModifyUserName;
+	}
+
+	/**
+	 * @return the zhengtiList
+	 */
+	public List<String> getZhengtiList()
+	{
+		return zhengtiList;
+	}
+
+	/**
+	 * @param zhengtiList
+	 *            the zhengtiList to set
+	 */
+	public void setZhengtiList(List<String> zhengtiList)
+	{
+		this.zhengtiList = zhengtiList;
+	}
+
+	/**
+	 * @return the jubuList
+	 */
+	public List<String> getJubuList()
+	{
+		return jubuList;
+	}
+
+	/**
+	 * @param jubuList
+	 *            the jubuList to set
+	 */
+	public void setJubuList(List<String> jubuList)
+	{
+		this.jubuList = jubuList;
+	}
+
+	/**
+	 * @return the xingshiList
+	 */
+	public List<String> getXingshiList()
+	{
+		return xingshiList;
+	}
+
+	/**
+	 * @param xingshiList
+	 *            the xingshiList to set
+	 */
+	public void setXingshiList(List<String> xingshiList)
+	{
+		this.xingshiList = xingshiList;
+	}
+
+	/**
+	 * @return the jiashiList
+	 */
+	public List<String> getJiashiList()
+	{
+		return jiashiList;
+	}
+
+	/**
+	 * @param jiashiList
+	 *            the jiashiList to set
+	 */
+	public void setJiashiList(List<String> jiashiList)
+	{
+		this.jiashiList = jiashiList;
+	}
+
+	/**
+	 * @return the jipaiList
+	 */
+	public List<String> getJipaiList()
+	{
+		return jipaiList;
+	}
+
+	/**
+	 * @param jipaiList
+	 *            the jipaiList to set
+	 */
+	public void setJipaiList(List<String> jipaiList)
+	{
+		this.jipaiList = jipaiList;
+	}
+
+	/**
+	 * @return the jijiaList
+	 */
+	public List<String> getJijiaList()
+	{
+		return jijiaList;
+	}
+
+	/**
+	 * @param jijiaList
+	 *            the jijiaList to set
+	 */
+	public void setJijiaList(List<String> jijiaList)
+	{
+		this.jijiaList = jijiaList;
+	}
+
+	/**
+	 * @return the shangzheList
+	 */
+	public List<String> getShangzheList()
+	{
+		return shangzheList;
+	}
+
+	/**
+	 * @param shangzheList
+	 *            the shangzheList to set
+	 */
+	public void setShangzheList(List<String> shangzheList)
+	{
+		this.shangzheList = shangzheList;
+	}
+
+	/**
+	 * @return the buweiList
+	 */
+	public List<String> getBuweiList()
+	{
+		return buweiList;
+	}
+
+	/**
+	 * @param buweiList
+	 *            the buweiList to set
+	 */
+	public void setBuweiList(List<String> buweiList)
+	{
+		this.buweiList = buweiList;
+	}
+
+	/**
+	 * @return the sunshiList
+	 */
+	public List<String> getSunshiList()
+	{
+		return sunshiList;
+	}
+
+	/**
+	 * @param sunshiList
+	 *            the sunshiList to set
+	 */
+	public void setSunshiList(List<String> sunshiList)
+	{
+		this.sunshiList = sunshiList;
+	}
+
+	/**
+	 * @return the weixiuList
+	 */
+	public List<String> getWeixiuList()
+	{
+		return weixiuList;
+	}
+
+	/**
+	 * @param weixiuList
+	 *            the weixiuList to set
+	 */
+	public void setWeixiuList(List<String> weixiuList)
+	{
+		this.weixiuList = weixiuList;
+	}
+
+	/**
+	 * @return the zerenList
+	 */
+	public List<String> getZerenList()
+	{
+		return zerenList;
+	}
+
+	/**
+	 * @param zerenList
+	 *            the zerenList to set
+	 */
+	public void setZerenList(List<String> zerenList)
+	{
+		this.zerenList = zerenList;
+	}
+
+	/**
+	 * @return the panjueList
+	 */
+	public List<String> getPanjueList()
+	{
+		return panjueList;
+	}
+
+	/**
+	 * @param panjueList
+	 *            the panjueList to set
+	 */
+	public void setPanjueList(List<String> panjueList)
+	{
+		this.panjueList = panjueList;
+	}
+
+	/**
+	 * @return the zhenduanList
+	 */
+	public List<String> getZhenduanList()
+	{
+		return zhenduanList;
+	}
+
+	/**
+	 * @param zhenduanList
+	 *            the zhenduanList to set
+	 */
+	public void setZhenduanList(List<String> zhenduanList)
+	{
+		this.zhenduanList = zhenduanList;
+	}
+
+	/**
+	 * @return the fapiaoList
+	 */
+	public List<String> getFapiaoList()
+	{
+		return fapiaoList;
+	}
+
+	/**
+	 * @param fapiaoList
+	 *            the fapiaoList to set
+	 */
+	public void setFapiaoList(List<String> fapiaoList)
+	{
+		this.fapiaoList = fapiaoList;
+	}
+
+	/**
+	 * @return the yongyaoList
+	 */
+	public List<String> getYongyaoList()
+	{
+		return yongyaoList;
+	}
+
+	/**
+	 * @param yongyaoList
+	 *            the yongyaoList to set
+	 */
+	public void setYongyaoList(List<String> yongyaoList)
+	{
+		this.yongyaoList = yongyaoList;
 	}
 
 }

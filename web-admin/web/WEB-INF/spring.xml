@@ -21,9 +21,9 @@
 
 	<!-- Database Connection Pool -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
-		<property name="url" value="jdbc:mysql://101.200.40.41:9431/njhzbx_dev?zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;characterEncoding=utf-8" />
-		<property name="username" value="njhzbx" />
-		<property name="password" value="093821*lqmxoz$MySQL" />
+		<property name="url" value="jdbc:mysql://101.200.40.41:9431/njhzbx_dev?zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;characterEncoding=utf-8"/>
+		<property name="username" value="njhzbx-product"/>
+		<property name="password" value="590323#jkepqx@product"/>
 		<!-- 配置初始化大小、最小、最大 -->
 		<property name="initialSize" value="2" />
 		<property name="minIdle" value="1" /> 
@@ -124,7 +124,7 @@
 		<!--
 			This definition creates auto-proxy infrastructure based on the given pointcut, expressed in AspectJ pointcut language. Here: applying the advice named "txAdvice" to all methods defined in the "com.andong" package.
 		-->
-		<aop:pointcut id="aopPointCut" expression="execution(* cn.forp.framework.platform.service.*.*(..)) || execution(* cn.forp.walnut.service.*.*(..))" />
+		<aop:pointcut id="aopPointCut" expression="execution(* cn.forp.framework.platform.service.*.*(..)) || execution(* cn.forp.*.service.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="aopPointCut" />
 	</aop:config>
 

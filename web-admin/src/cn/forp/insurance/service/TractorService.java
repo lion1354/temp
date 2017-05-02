@@ -5,13 +5,12 @@
  */
 package cn.forp.insurance.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import cn.forp.framework.core.BaseService;
@@ -62,15 +61,12 @@ public class TractorService extends BaseService
 		}
 	}
 
-	/**
+	/*
 	 * 分页查询列表
 	 * 
-	 * @param user
-	 *            操作人
-	 * @param state
-	 *            保单状态
-	 * @param ps
-	 *            分页排序信息
+	 * @param user  操作人
+	 * @param form  请求参数
+	 * @param ps    分页排序信息
 	 */
 	public Page<Tractor> search(User user, IForm form, PageSort ps) throws Exception
 	{
@@ -92,51 +88,51 @@ public class TractorService extends BaseService
 		String diquSelected = form.get("diquSelected");
 		String xianSelected = form.get("xianSelected");
 		String chargingType = form.get("chargingType");
-		String orderType = form.get("orderType");
+		// String orderType = form.get("orderType");
 
 		lg.debug("searchType carType ：{}", carType);
-		if (StringUtils.isNoneBlank(querryFormid))
+		if (StringUtils.isNotBlank(querryFormid))
 		{
 			sql += " and form.insuranceTractorId like ?";
 			params.add("%" + querryFormid + "%");
 		}
-		if (StringUtils.isNoneBlank(querryFormOwner))
+		if (StringUtils.isNotBlank(querryFormOwner))
 		{
 			sql += " and form.owner like ?";
 			params.add("%" + querryFormOwner + "%");
 		}
-		if (StringUtils.isNoneBlank(querryFormAddress))
+		if (StringUtils.isNotBlank(querryFormAddress))
 		{
 			sql += " and form.address like ?";
 			params.add("%" + querryFormAddress + "%");
 		}
-		if (StringUtils.isNoneBlank(querryFormOwnerTel))
+		if (StringUtils.isNotBlank(querryFormOwnerTel))
 		{
 			sql += " and form.telNum = ?";
 			params.add(querryFormOwnerTel);
 		}
-		if (StringUtils.isNoneBlank(querryFormCarNum))
+		if (StringUtils.isNotBlank(querryFormCarNum))
 		{
 			sql += " and form.carNum like ?";
 			params.add("%" + querryFormCarNum + "%");
 		}
-		if (StringUtils.isNoneBlank(querryFormFactoryNum))
+		if (StringUtils.isNotBlank(querryFormFactoryNum))
 		{
 			sql += " and form.factoryNum like ?";
 			params.add("%" + querryFormFactoryNum + "%");
 
 		}
-		if (StringUtils.isNoneBlank(querryFormEigineNum))
+		if (StringUtils.isNotBlank(querryFormEigineNum))
 		{
 			sql += " and form.engineNum like ?";
 			params.add("%" + querryFormEigineNum + "%");
 		}
-		if (StringUtils.isNoneBlank(querryFormJiJiaNum))
+		if (StringUtils.isNotBlank(querryFormJiJiaNum))
 		{
 			sql += " and form.jijiaNum like ?";
 			params.add("%" + querryFormJiJiaNum + "%");
 		}
-		if (StringUtils.isNoneBlank(carType))
+		if (StringUtils.isNotBlank(carType))
 		{
 			sql += " and form.type = ?";
 			params.add(carType);
@@ -145,7 +141,7 @@ public class TractorService extends BaseService
 		{
 			sql += " and form.type = 0";
 		}
-		if (StringUtils.isNoneBlank(projectTypeList))
+		if (StringUtils.isNotBlank(projectTypeList))
 		{
 			List<String> projectTypeArrays = Arrays.asList(projectTypeList.split(Constants.SEPARATOR));
 			if (!projectTypeArrays.contains("5"))
@@ -216,31 +212,31 @@ public class TractorService extends BaseService
 			}
 		}
 
-		if (StringUtils.isNoneBlank(formType) && !formType.equals("-1"))
+		if (StringUtils.isNotBlank(formType) && !formType.equals("-1"))
 		{
 			sql += " and form.formStatus = ?";
 			params.add(formType);
 		}
-		if (StringUtils.isNoneBlank(chargingStatus) && !chargingStatus.equals("A"))
+		if (StringUtils.isNotBlank(chargingStatus) && !chargingStatus.equals("A"))
 		{
 			sql += " and form.charging_status = ?";
 			params.add(chargingStatus);
 		}
-		if (StringUtils.isNoneBlank(formYear) && !formYear.equals("-1"))
+		if (StringUtils.isNotBlank(formYear) && !formYear.equals("-1"))
 		{
 			sql += " and form.qiandanYear = ?";
 			params.add(formYear);
 		}
-		if (StringUtils.isNoneBlank(diquSelected) && !diquSelected.equals("0"))
+		if (StringUtils.isNotBlank(diquSelected) && !diquSelected.equals("0"))
 		{
-			if (StringUtils.isNoneBlank(xianSelected) && !xianSelected.equals("0"))
+			if (StringUtils.isNotBlank(xianSelected) && !xianSelected.equals("0"))
 			{
 				sql += " and form.xianId = ?";
 				params.add(xianSelected);
 			}
-			if (StringUtils.isNoneBlank(xianSelected) && xianSelected.equals("0"))
+			if (StringUtils.isNotBlank(xianSelected) && xianSelected.equals("0"))
 			{
-				sql += " and form.areaId = ?";
+				sql += " and form.xianId in (select xianId from sys_xian where areaId=?)";
 				params.add(diquSelected);
 			}
 		}
@@ -250,59 +246,72 @@ public class TractorService extends BaseService
 			xianSelected = user.getItem2();
 			if (!diquSelected.equals("0"))
 			{
-				if (StringUtils.isNoneBlank(xianSelected) && !xianSelected.equals("0"))
+				if (StringUtils.isNotBlank(xianSelected) && !xianSelected.equals("0"))
 				{
 					sql += " and form.xianId = ?";
 					params.add(xianSelected);
 				}
-				if (StringUtils.isNoneBlank(xianSelected) && xianSelected.equals("0"))
+				if (StringUtils.isNotBlank(xianSelected) && xianSelected.equals("0"))
 				{
 					sql += " and form.areaId = ?";
 					params.add(diquSelected);
 				}
 			}
 		}
-		if (StringUtils.isNoneBlank(chargingType) && !chargingType.equals("-1"))
+		if (StringUtils.isNotBlank(chargingType) && !chargingType.equals("-1"))
 		{
 			sql += " and form.insuranceTractorId in (select cd.insurance_id from Charge_Detail as cd where cd.charging_type = ?)";
 			params.add(chargingType);
 		}
-
-		if (StringUtils.isNoneBlank(orderType))
-		{
-			if ("0".equals(orderType))
-			{
-				sql += " order by form.qiandanDate";
-			}
-			else if ("1".equals(orderType))
-			{
-				sql += " order by form.insuranceTractorId";
-			}
-			else if ("2".equals(orderType))
-			{
-				sql += " order by form.address";
-			}
-			else if ("3".equals(orderType))
-			{
-				sql += " order by form.factoryNum";
-			}
-			else if ("4".equals(orderType))
-			{
-				sql += " order by form.qiandanPerson";
-			}
-		}
+		/*
+		 * if (StringUtils.isNotBlank(orderType)) { if ("0".equals(orderType)) { sql += " order by form.qiandanDate"; }
+		 * else if ("1".equals(orderType)) { sql += " order by form.insuranceTractorId"; } else if
+		 * ("2".equals(orderType)) { sql += " order by form.address"; } else if ("3".equals(orderType)) { sql +=
+		 * " order by form.factoryNum"; } else if ("4".equals(orderType)) { sql += " order by form.qiandanPerson"; } }
+		 */
 		lg.debug("SQL：{}", sql);
 		Page<Tractor> page = findByPage(sql, params.toArray(new Object[0]), Tractor.class, ps);
 		List<Tractor> list = page.getRows();
 		if (list != null && list.size() > 0)
 		{
+			// 加载PC端账号名称Cache
+			Map<String, String> pcQianDanRenCache = new HashMap<>();
+			SqlRowSet rs = jdbc.queryForRowSet("select ID, UserName from Forp_User");
+			while (rs.next())
+			{
+				pcQianDanRenCache.put(rs.getString("ID"), rs.getString("UserName"));
+			}
+
+			// 加载移动端账号名称Cache
+			Map<String, String> mobileQianDanRenCache = new HashMap<>();
+			rs = jdbc.queryForRowSet("select ID, UserName from Sys_Member_Info");
+			while (rs.next())
+			{
+				mobileQianDanRenCache.put(rs.getString("ID"), rs.getString("UserName"));
+			}
+
 			for (Tractor tractor : list)
 			{
 				Integer xianId = tractor.getXianId();
 				SimpleObject ob = getRegionById(xianId).get(0);
 				tractor.setXianName(ob.getName());
+
+				// Mobile端的签单人名称转义
+				if (1 == tractor.getQiandanPersonType())
+				{
+					// 移动端会员
+					if (mobileQianDanRenCache.containsKey(tractor.getQiandanPerson()))
+						tractor.setQiandanPerson(mobileQianDanRenCache.get(tractor.getQiandanPerson()));
+				}
+				else
+				{
+					// PC端管理员
+					if (pcQianDanRenCache.containsKey(tractor.getQiandanPerson()))
+						tractor.setQiandanPerson(pcQianDanRenCache.get(tractor.getQiandanPerson()));
+				}
 			}
 		}
+
 		return page;
 	}
 
@@ -337,14 +346,15 @@ public class TractorService extends BaseService
 
 	public List<Tractor> reportInsuranceSearch(String insuranceTractorId, String telNum) throws Exception
 	{
-		String sql = "select * from Sys_Tractor form where 1=1";
+		String sql = "select * from Sys_Tractor form where 1=1 and insuranceEnd >= ?";
 		List<Object> params = new ArrayList<>();
-		if (StringUtils.isNoneBlank(insuranceTractorId))
+		params.add(new Date());
+		if (StringUtils.isNotBlank(insuranceTractorId))
 		{
 			sql += " and form.insuranceTractorId like ?";
 			params.add("%" + insuranceTractorId + "%");
 		}
-		if (StringUtils.isNoneBlank(telNum))
+		if (StringUtils.isNotBlank(telNum))
 		{
 			sql += " and form.telNum = ?";
 			params.add(telNum);

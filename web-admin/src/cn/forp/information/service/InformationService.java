@@ -123,6 +123,9 @@ public class InformationService extends BaseService
 		information.setStatus(0);
 		information.setCreateUserName(sessionUser.getUserName());
 		information.setCreateDate(new Timestamp(System.currentTimeMillis()));
+		information.setLastModifyUserId(sessionUser.getId());
+		information.setLastModifyUserName(sessionUser.getUserName());
+		information.setLastModifyDate(new Timestamp(System.currentTimeMillis()));
 		insertIntoTable(information, null, null);
 	}
 

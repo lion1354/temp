@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>2.0</jspversion>
+	<shortname>通用标签库</shortname>
+	<info>提供通用组件的标签库</info>
+
+	<!-- 细粒度权限检查标签 -->
+	<tag>
+		<name>privilege</name>
+		<tagclass>cn.forp.framework.core.tag.PrivilegeTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+
+		<attribute>
+			<name>menu</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+		<attribute>
+			<name>sn</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

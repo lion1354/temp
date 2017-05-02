@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>Forp functions lib</description>
+	<display-name>Forp Framework functions</display-name>
+	<tlib-version>1.1</tlib-version>
+	<short-name>fun</short-name>
+	<uri>http://forp.westerasoft.com</uri>
+
+	<function>
+		<description>将普通带格式的文本内容转换为html格式（页面显示）</description>
+		<name>textToHtml</name>
+		<function-class>cn.forp.framework.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String textToHtml(java.lang.String)</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>将html格式的文本内容转换为普通的格式（输入域显示用）</description>
+		<name>htmlToText</name>
+		<function-class>cn.forp.framework.core.util.StringUtil</function-class>
+		<function-signature>java.lang.String htmlToText(java.lang.String)</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>格式化小数，保留指定的小数位数</description>
+		<name>format</name>
+		<function-class>cn.forp.framework.core.util.NumberUtil</function-class>
+		<function-signature>java.lang.String format(double, int)</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>获取当前日期</description>
+		<name>getTodayDate</name>
+		<function-class>cn.forp.framework.core.util.DateUtil</function-class>
+		<function-signature>java.lang.String getTodayDate()</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>获取当月1日日期</description>
+		<name>getFirstDateOfThisMonth</name>
+		<function-class>cn.forp.framework.core.util.DateUtil</function-class>
+		<function-signature>java.lang.String getFirstDateOfThisMonth()</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>格式化小数位数</description>
+		<name>formatNumber</name>
+		<function-class>cn.forp.framework.core.util.NumberUtil</function-class>
+		<function-signature>java.lang.String format(double)</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>格式化字符串</description>
+		<name>formatStr</name>
+		<function-class>org.apache.commons.lang3.StringUtils</function-class>
+		<function-signature>java.lang.String defaultString(java.lang.String)</function-signature>
+		<example></example>
+	</function>
+
+	<function>
+		<description>获取七牛图片路径</description>
+		<name>qiniuUrl</name>
+		<function-class>cn.forp.framework.core.util.QiNiu</function-class>
+		<function-signature>java.lang.String getResourceURL(java.lang.String)</function-signature>
+		<example></example>
+	</function>
+</taglib>
